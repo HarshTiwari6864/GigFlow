@@ -141,7 +141,7 @@ export default function Bids() {
   </p>
 
   {/* TOOLTIP */}
-  {bid.freelancerId?.about && (
+  {bid.freelancerId && (
   <div
     className="absolute left-0 top-full mt-2 w-72
     rounded-xl p-4 text-sm
@@ -153,12 +153,14 @@ export default function Bids() {
     pointer-events-none transition-opacity duration-200
     z-[9999]"
   >
-    {/* HEADER: Avatar + Name */}
+    {/* HEADER */}
     <div className="flex items-center gap-3 mb-2">
       <img
         src={
           bid.freelancerId.profileImage
-            ? `${import.meta.env.VITE_API_URL}${bid.freelancerId.profileImage}`
+            ? bid.freelancerId.profileImage.startsWith("http")
+              ? bid.freelancerId.profileImage
+              : `${import.meta.env.VITE_API_URL}${bid.freelancerId.profileImage}`
             : "/profile.svg"
         }
         alt="avatar"
@@ -170,12 +172,15 @@ export default function Bids() {
       </p>
     </div>
 
-    {/* ABOUT */}
-    <p className="text-gray-700 leading-relaxed">
-      {bid.freelancerId.about}
+    {/* ABOUT (safe fallback) */}
+    <p className="text-gray-700 leading-relaxed italic">
+      {bid.freelancerId.about?.trim()
+        ? bid.freelancerId.about
+        : "No description of user yet."}
     </p>
   </div>
 )}
+
 
 </div>
 
