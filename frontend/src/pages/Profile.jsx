@@ -60,7 +60,7 @@ export default function Profile() {
         <img
           src={
             profile.profileImage
-              ? `${import.meta.env.VITE_API_URL}${profile.profileImage}`
+              ? profile.profileImage
               : "/profile.svg"
           }
           className="w-28 h-28 rounded-full object-cover border"

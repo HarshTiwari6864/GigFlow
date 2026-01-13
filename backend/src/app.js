@@ -49,7 +49,7 @@ app.use("/api/bids", bidRoutes);
 app.use("/api/profile", profileRoutes);
 
 // STATIC UPLOADS
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+// app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.get("/", (req, res) => {
   res.send("GigFlow API running");

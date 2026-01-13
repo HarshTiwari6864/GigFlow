@@ -144,19 +144,38 @@ export default function Navbar() {
 
   const closeTimer = useRef(null);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setAvatar("");
-      setProfile(null);
-      return;
-    }
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //      setAvatar("");
+  //     setProfile(null);
+  //     return;
+  //   }
 
-    api.get("/profile").then((res) => {
+  //   api.get("/profile").then((res) => {
+  //     setProfile(res.data);
+  //     const img = res.data.profileImage;
+  //     setAvatar(img ? `${import.meta.env.VITE_API_URL}${img}` : "");
+  //   });
+  // }, [isAuthenticated]);
+  useEffect(() => {
+  if (!isAuthenticated) {
+    setProfile(null);
+    setAvatar("");
+    return;
+  }
+
+  api.get("/profile")
+    .then((res) => {
       setProfile(res.data);
       const img = res.data.profileImage;
       setAvatar(img ? `${import.meta.env.VITE_API_URL}${img}` : "");
+    })
+    .catch(() => {
+      setProfile(null);
+      setAvatar("");
     });
-  }, [isAuthenticated]);
+}, [isAuthenticated]);
+
 
   if (loading) return null;
 
