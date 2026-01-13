@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 import api from "../api/axios";
 
 export default function Profile() {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const [profile, setProfile] = useState({
     name: "",
@@ -14,6 +12,8 @@ export default function Profile() {
     about: "",
     profileImage: ""
   });
+  const [imageUploaded, setImageUploaded] = useState(false);
+
 
   // 👇 START IN EDIT MODE IF NAVIGATED FROM NAVBAR
   const [editMode, setEditMode] = useState(
@@ -40,7 +40,8 @@ export default function Profile() {
     });
 
     // ✅ redirect safely
-    navigate("/");
+    window.location.href = "/";
+
   } catch {
     console.error("Failed to update profile");
   }
@@ -106,15 +107,33 @@ export default function Profile() {
       }
     />
           <label className="block mb-2 font-medium">
-            Profile Photo
-          </label>
+  Profile Photo
+</label>
 
-          <input
-            type="file"
-            accept="image/*"
-            className="mb-4"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
+<input
+  id="profileImage"
+  type="file"
+  accept="image/*"
+  className="hidden"
+  onChange={(e) => {
+    setImage(e.target.files[0]);
+    setImageUploaded(true);
+  }}
+/>
+
+<label
+  htmlFor="profileImage"
+  className="inline-block cursor-pointer border px-4 py-2 rounded hover:bg-gray-100"
+>
+  Choose Image
+</label>
+
+{imageUploaded && (
+  <p className="text-sm text-green-600 mt-2">
+    Image uploaded ✅
+  </p>
+)}
+
 
           <label className="block mb-2 font-medium">
             About You

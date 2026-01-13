@@ -216,7 +216,7 @@ export default function Bids() {
             navigate("/");
           }
           if (isSuccess && modalTitle.includes("Freelancer Hired")) {
-            load();
+            navigate("/");
           }
         }}
       />
