@@ -168,7 +168,16 @@ export default function Navbar() {
     .then((res) => {
       setProfile(res.data);
       const img = res.data.profileImage;
-      setAvatar(img ? `${import.meta.env.VITE_API_URL}${img}` : "");
+      // setAvatar(img ? `${import.meta.env.VITE_API_URL}${img}` : "");
+      setAvatar(
+  img
+    ? img.startsWith("http")
+      ? img
+      : `${import.meta.env.VITE_API_URL}${img}`
+    : ""
+);
+      
+
     })
     .catch(() => {
       setProfile(null);
