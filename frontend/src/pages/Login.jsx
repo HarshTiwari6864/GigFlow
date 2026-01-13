@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import api from "../api/axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -7,29 +6,20 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // ✅ added
-
   const navigate = useNavigate();
   const { setIsAuthenticated } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // clear old error
-
-    try {
-      await api.post("/auth/login", { email, password });
-      setIsAuthenticated(true);
-      navigate("/");
-    } catch (err) {
-      // ✅ show backend error or fallback
-      setError(
-        err.response?.data?.message || "Wrong email or password"
-      );
-    }
+    await api.post("/auth/login", { email, password });
+    setIsAuthenticated(true);
+    navigate("/");
   };
 
   return (
     <div className="flex justify-center mt-12 px-6 pt-4">
+
+
       <div className="w-full max-w-md border border-black rounded-lg p-6">
         
         {/* WELCOME TEXT */}
@@ -46,10 +36,7 @@ export default function Login() {
             className="border p-3 w-full rounded"
             placeholder="Email"
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setError("");
-            }}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
@@ -58,19 +45,9 @@ export default function Login() {
             className="border p-3 w-full rounded"
             placeholder="Password"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError("");
-            }}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
-
-          {/* ❌ ERROR MESSAGE (minimal) */}
-          {error && (
-            <p className="text-red-600 text-sm text-center">
-              {error}
-            </p>
-          )}
 
           <button
             type="submit"
