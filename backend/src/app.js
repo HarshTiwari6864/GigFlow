@@ -19,8 +19,30 @@ app.use(cookieParser());
 /**
  * ✅ SAFE CORS CONFIG (Render + Vercel)
  */
+// const allowedOrigins = [
+//   process.env.CLIENT_URL,     
+//   "http://localhost:5173",
+//   "http://localhost:3000"
+// ];
+
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       // allow server-side / Postman / curl
+//       if (!origin) return callback(null, true);
+
+//       if (allowedOrigins.includes(origin)) {
+//         return callback(null, true);
+//       }
+
+//       console.error("❌ Blocked by CORS:", origin);
+//       return callback(new Error("CORS not allowed"), false);
+//     },
+//     credentials: true
+//   })
+// );
 const allowedOrigins = [
-  process.env.CLIENT_URL,     
+  process.env.CLIENT_URL,
   "http://localhost:5173",
   "http://localhost:3000"
 ];
@@ -28,15 +50,14 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // allow server-side / Postman / curl
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
+      if (allowedOrigins.some(o => origin.startsWith(o))) {
         return callback(null, true);
       }
 
       console.error("❌ Blocked by CORS:", origin);
-      return callback(new Error("CORS not allowed"), false);
+      return callback(new Error("CORS not allowed"));
     },
     credentials: true
   })
