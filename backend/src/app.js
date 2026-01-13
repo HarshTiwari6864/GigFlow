@@ -20,15 +20,15 @@ app.use(cookieParser());
  * ✅ SAFE CORS CONFIG (Render + Vercel)
  */
 const allowedOrigins = [
-  process.env.CLIENT_URL,           // prod frontend
-  "http://localhost:5173",           // local dev
+  process.env.CLIENT_URL,     
+  "http://localhost:5173",
   "http://localhost:3000"
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // allow server-to-server, curl, postman
+      // allow server-side / Postman / curl
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
@@ -36,11 +36,12 @@ app.use(
       }
 
       console.error("❌ Blocked by CORS:", origin);
-      return callback(null, false);
+      return callback(new Error("CORS not allowed"), false);
     },
     credentials: true
   })
 );
+
 
 // ROUTES
 app.use("/api/auth", authRoutes);
