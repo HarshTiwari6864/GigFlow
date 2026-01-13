@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html {
+  font-size: 18px; /* default is 16px → this is +2 */
+}
+
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* ❌ disable browser scroll */
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+
+
