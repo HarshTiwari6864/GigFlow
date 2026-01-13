@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import api from "../api/axios";
 
 export default function Profile() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState({
     name: "",
@@ -23,25 +26,26 @@ export default function Profile() {
     api.get("/profile").then((res) => setProfile(res.data));
   }, []);
 
-  const updateProfile = async (e) => {
-    e.preventDefault();
+ const updateProfile = async (e) => {
+  e.preventDefault();
 
-    try {
-      const formData = new FormData();
-      formData.append("about", profile.about);
-      if (image) formData.append("image", image);
-      if (profile.name) formData.append("name", profile.name);
+  try {
+    const formData = new FormData();
+    formData.append("about", profile.about);
+    formData.append("name", profile.name);
+    if (image) formData.append("image", image);
 
-      await api.put("/profile", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+    await api.put("/profile", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
 
-      // Refresh to sync navbar
-      window.location.reload();
-    } catch {
-      alert("Failed to update profile");
-    }
-  };
+    // ✅ redirect safely
+    navigate("/");
+  } catch {
+    console.error("Failed to update profile");
+  }
+};
+
   return (
   <div className="flex justify-center mt-16 px-6">
     <div className="w-full max-w-md border border-black rounded-lg p-6">
