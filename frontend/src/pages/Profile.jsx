@@ -30,6 +30,7 @@ export default function Profile() {
       const formData = new FormData();
       formData.append("about", profile.about);
       if (image) formData.append("image", image);
+      if (profile.name) formData.append("name", profile.name);
 
       await api.put("/profile", formData, {
         headers: { "Content-Type": "multipart/form-data" }
@@ -41,10 +42,13 @@ export default function Profile() {
       alert("Failed to update profile");
     }
   };
-
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">My Profile</h2>
+  <div className="flex justify-center mt-16 px-6">
+    <div className="w-full max-w-md border border-black rounded-lg p-6">
+
+      <h2 className="text-2xl font-bold mb-6 text-center">
+        My Profile
+      </h2>
 
       {/* PROFILE IMAGE */}
       <div className="flex justify-center mb-4">
@@ -54,15 +58,20 @@ export default function Profile() {
               ? `${import.meta.env.VITE_API_URL}${profile.profileImage}`
               : "/profile.svg"
           }
-          className="w-32 h-32 rounded-full object-cover border"
+          className="w-28 h-28 rounded-full object-cover border"
         />
       </div>
 
       {/* VIEW MODE */}
       {!editMode && (
         <div className="text-center">
-          <p className="text-lg font-semibold">{profile.name}</p>
-          <p className="text-gray-600 mb-4">{profile.email}</p>
+          <p className="text-lg font-semibold">
+            {profile.name}
+          </p>
+
+          <p className="text-gray-600 mb-4">
+            {profile.email}
+          </p>
 
           <p className="text-gray-700 mb-6">
             {profile.about || "No description added yet."}
@@ -70,7 +79,7 @@ export default function Profile() {
 
           <button
             onClick={() => setEditMode(true)}
-            className="bg-black text-white px-6 py-2 rounded"
+            className="bg-black text-white w-full py-3 rounded"
           >
             Update Profile
           </button>
@@ -80,9 +89,22 @@ export default function Profile() {
       {/* EDIT MODE */}
       {editMode && (
         <form onSubmit={updateProfile} className="mt-6">
+          {/* NAME */}
+    <label className="block mb-2 font-medium">
+      Name
+    </label>
+    <input
+      type="text"
+      className="border p-2 w-full mb-4 rounded"
+      value={profile.name}
+      onChange={(e) =>
+        setProfile({ ...profile, name: e.target.value })
+      }
+    />
           <label className="block mb-2 font-medium">
             Profile Photo
           </label>
+
           <input
             type="file"
             accept="image/*"
@@ -93,8 +115,9 @@ export default function Profile() {
           <label className="block mb-2 font-medium">
             About You
           </label>
+
           <textarea
-            className="border p-2 w-full mb-4"
+            className="border p-2 w-full mb-4 rounded"
             rows="4"
             value={profile.about}
             onChange={(e) =>
@@ -105,7 +128,7 @@ export default function Profile() {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="bg-black text-white px-6 py-2 rounded"
+              className="bg-black text-white w-full py-3 rounded"
             >
               Save
             </button>
@@ -113,14 +136,16 @@ export default function Profile() {
             <button
               type="button"
               onClick={() => setEditMode(false)}
-              className="border px-6 py-2 rounded"
+              className="border w-full py-3 rounded"
             >
               Cancel
             </button>
           </div>
         </form>
       )}
-      
+
     </div>
-  );
+  </div>
+);
+
 }
